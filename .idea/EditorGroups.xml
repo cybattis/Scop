@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EditorGroups">
+    <lastGroup>
+      <p k="$PROJECT_DIR$/srcs/core_renderer.hpp" v="RegexGroup: v1|CURRENT_FOLDER||(\.*){1,}(.*?pp)" />
+      <p k="$PROJECT_DIR$/srcs/core.d" v="HidePanelGroup" />
+    </lastGroup>
+  </component>
+</project>
