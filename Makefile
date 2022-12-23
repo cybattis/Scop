@@ -26,7 +26,9 @@ IMGUI_DIR	=	vendor/imgui
 GLM_DIR		=	vendor/glm/detail
 GLAD_DIR	=	vendor/glad/glad
 
-SRCS_CORE	=	main.cpp test_shader.cpp core.cpp core_imgui.cpp core_renderer.cpp config.cpp
+SRCS_CORE	=	main.cpp core.cpp core_imgui.cpp core_renderer.cpp \
+				rectangle_shader.cpp triangles_shader.cpp
+# 				config.cpp
 
 SRCS_IMGUI	=	$(IMGUI_DIR)/imgui.cpp \
 				$(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_tables.cpp \

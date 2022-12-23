@@ -10,23 +10,20 @@
 #include <GLFW/glfw3.h>
 
 #include "core_imgui.hpp"
-#include "config.hpp"
 
 class Application
 {
 public:
 	int width, height;
+	float ratio;
 	GLFWwindow *window{};
 	UI ui;
-	float ratio;
 
 	explicit Application(int width = 960, int height = 540, const char *title = "My window");
 	~Application();
 
-	GLFWwindow* init_glfw(const char *title) const;
-
 private:
-	static void update_after_event();
+	GLFWwindow* init_glfw(const char *title) const;
 
 	static void error_callback(int error, const char *description);
 	static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);

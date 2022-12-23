@@ -2,9 +2,9 @@
 // Created by Cyril Battistolo on 19/12/2022.
 //
 
-#include "test_shader.hpp"
+#include "rectangle_shader.hpp"
 
-void test_shader::setup()
+void rectangle_shader::setup()
 {
 	glGenBuffers(1, &VBO);
 	glGenVertexArrays(1, &VAO);
@@ -21,7 +21,7 @@ void test_shader::setup()
 	glEnableVertexAttribArray(0);
 }
 
-void test_shader::render() const
+void rectangle_shader::render() const
 {
 	glUseProgram(program);
 	glBindVertexArray(VAO);
@@ -29,7 +29,7 @@ void test_shader::render() const
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 
-void test_shader::compile_shader()
+void rectangle_shader::compile_shader()
 {
 	// Create the vertex shader
 	vertex_shader = glCreateShader(GL_VERTEX_SHADER);

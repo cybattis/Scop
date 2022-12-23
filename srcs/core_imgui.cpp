@@ -30,14 +30,18 @@ UI::~UI()
 	std::cerr << "UI destroyed" << std::endl;
 }
 
-void UI::setup()
+void UI::setup(int width, int height)
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 
+	// Imgui config
+	ImGui::SetNextWindowSize(ImVec2(static_cast<float>(width) / 5, static_cast<float>(height)));
+	ImGui::SetNextWindowPos(ImVec2(static_cast<float>(width) - static_cast<float>(width) / 5, 0));
 	ImGui::Begin("Hello, world!");
-	ImGui::Checkbox("Wireframe", &config::is_wireframe);
+	if (ImGui::Checkbox("Wireframe", &is_wireframe))
+		update_event();
 	ImGui::End();
 }
 
@@ -45,4 +49,18 @@ void UI::render()
 {
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+void UI::update_event()
+{
+	std::cout << "Update event" << std::endl;
+	std::cout << "Wireframe: " << is_wireframe << std::endl;
+	if (is_wireframe) {
+		std::cout << "Wireframe mode enabled" << std::endl;
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else {
+		std::cout << "Wireframe mode disable" << std::endl;
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
 }

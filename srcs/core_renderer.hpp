@@ -6,12 +6,14 @@
 #define CORE_RENDERER_HPP
 
 #include "core.hpp"
-#include "test_shader.hpp"
+#include "triangles_shader.hpp"
+#include "rectangle_shader.hpp"
 
 class renderer
 {
 public:
-	test_shader shader;
+	triangles_shader triangles;
+	rectangle_shader rectangle;
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 	void render() const;

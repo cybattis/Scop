@@ -2,8 +2,8 @@
 // Created by Cyril Battistolo on 19/12/2022.
 //
 
-#ifndef TEST_SHADER_HPP
-#define TEST_SHADER_HPP
+#ifndef RECTANGLE_SHADER_HPP
+#define RECTANGLE_SHADER_HPP
 
 #include <iostream>
 #include <glm/glm.hpp>
@@ -13,12 +13,10 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
-#include "config.hpp"
-
-class test_shader
+class rectangle_shader
 {
-	int  success;
-	char infoLog[512];
+	int  success{};
+	char infoLog[512]{};
 	GLuint VAO{}, VBO{}, EBO{}, vertex_shader{}, fragment_shader{}, program{};
 
 	float vertices[12] = {
@@ -55,4 +53,4 @@ public:
 	void render() const;
 };
 
-#endif //TEST_SHADER_HPP
+#endif //TRIANGLES_SHADER_HPP

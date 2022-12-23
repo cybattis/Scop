@@ -12,11 +12,12 @@ Application::Application(const int width, const int height, const char *title) :
 	// TODO: init config
 	ratio = static_cast<float>(width) / static_cast<float>(height);
 	print_info_config(title);
+	glfwSetWindowUserPointer(window, (void *)this);
 }
 
 GLFWwindow* Application::init_glfw(const char *title) const
 {
-	GLFWwindow *tmp_window;
+	GLFWwindow *win;
 
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
@@ -28,24 +29,26 @@ GLFWwindow* Application::init_glfw(const char *title) const
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
 
-	tmp_window = glfwCreateWindow(width, height, title, nullptr, nullptr);
-	if (!tmp_window) {
+	win = glfwCreateWindow(width, height, title, nullptr, nullptr);
+	if (!win) {
 		glfwTerminate();
 		exit(EXIT_FAILURE);
 	}
 	std::cout << "Window created" << std::endl;
 
 	// create context
-	glfwMakeContextCurrent(tmp_window);
+	glfwMakeContextCurrent(win);
 
 	// init callbacks
-	glfwSetKeyCallback(tmp_window, key_callback);
-	glfwSetMouseButtonCallback(tmp_window, mouse_button_callback);
-	glfwSetCursorPosCallback(tmp_window, mouse_position_callback);
-	glfwSetFramebufferSizeCallback(tmp_window, framebuffer_size_callback);
+	glfwSetKeyCallback(win, key_callback);
+	glfwSetMouseButtonCallback(win, mouse_button_callback);
+	glfwSetCursorPosCallback(win, mouse_position_callback);
+	glfwSetFramebufferSizeCallback(win, framebuffer_size_callback);
 
 	// Enable vsync
-	 glfwSwapInterval(1);
+	glfwSwapInterval(1);
+	// Size limits of the window
+	glfwSetWindowSizeLimits(win, 1150, 750, GLFW_DONT_CARE, GLFW_DONT_CARE);
 
 	// Load OpenGL functions
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -55,7 +58,7 @@ GLFWwindow* Application::init_glfw(const char *title) const
 	}
 	std::cout << "GLAD initialized" << std::endl;
 
-	return tmp_window;
+	return win;
 }
 
 Application::~Application()
@@ -81,28 +84,21 @@ void Application::key_callback(GLFWwindow *window, int key, int scancode, int ac
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 	if (key == GLFW_KEY_F12 && action == GLFW_PRESS)
 		glfwSetWindowMonitor(window, glfwGetPrimaryMonitor(), 0, 0, 1920, 1080, 0);
-	if (key == GLFW_KEY_W && action == GLFW_PRESS)
-		config::toggle_wireframe();
-	if (key == GLFW_KEY_P && action == GLFW_PRESS)
-		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-	update_after_event();
 }
 
 void Application::framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
-	glfwGetFramebufferSize(window, &width, &height);
+	(void) window;
+	glViewport(0, 0, width, height);
+	std::cout << "Window resized to " << width << "x" << height << std::endl;
 }
 
 void Application::mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
 {
-	(void) window;
 	(void) button;
 	(void) action;
 	(void) mods;
-//	std::cout << "Mouse button: " << button << std::endl;
-//	std::cout << "Action: " << action << std::endl;
-//	std::cout << "Mods: " << mods << std::endl;
-	update_after_event();
+	(void) window;
 }
 
 void Application::mouse_position_callback(GLFWwindow *window, double xpos, double ypos)
@@ -113,20 +109,16 @@ void Application::mouse_position_callback(GLFWwindow *window, double xpos, doubl
 //	std::cout << "Mouse position: " << xpos << ", " << ypos << std::endl;
 }
 
-void Application::update_after_event()
-{
-	config::is_wireframe ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
-						 : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-
-}
-
 void Application::print_info_config(const char *title) const
 {
+	int nrAttributes;
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
+
 	std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 	std::cout << "OpenGL Shading version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 	std::cout << "OpenGL Vendor: " << glGetString(GL_VENDOR) << std::endl;
 	std::cout << "OpenGL Renderer: " << glGetString(GL_RENDERER) << std::endl;
+	std::cout << "Max Vertex attributes supported: " << nrAttributes << std::endl;
 	std::cout << "" << std::endl;
 	std::cout << "GLFW version: " << glfwGetVersionString() << std::endl;
 	std::cout << "" << std::endl;
