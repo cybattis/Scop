@@ -1,4 +1,4 @@
-#version 110
+#version 330 core
 
 varying vec3 color;
 

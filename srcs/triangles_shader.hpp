@@ -65,4 +65,4 @@ public:
 	void render() const;
 };
 
-#endif //TRIANGLES_SHADER_HPP
+#endif //LEARN_SHADER_HPP

@@ -20,15 +20,15 @@ int main()
 	// Main loop
 	while (!glfwWindowShouldClose(app.window))
 	{
-		render.render();
-
+		glfwPollEvents();
 		glfwGetWindowSize(app.window, &app.width, &app.height);
+
+		render.render();
 
 		app.ui.setup(app.width, app.height);
 		app.ui.render();
 
 		glfwSwapBuffers(app.window);
-		glfwPollEvents();
 	}
 	std::cout << "--- END RENDER LOOP ---" << std::endl;
 }
