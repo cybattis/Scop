@@ -17,6 +17,7 @@ class Shader
 public:
 	unsigned int ID; // the program ID
 
+	Shader() = default;
 	Shader(const char* vertexPath, const char* fragmentPath);
 
 	void use() const;
@@ -26,7 +27,7 @@ public:
 	void setFloat(const std::string &name, float value) const;
 
 private:
-	void checkCompileErrors(unsigned int shader, std::string type);
+	void checkCompileErrors(unsigned int shader, const std::string& type);
 };
 
 

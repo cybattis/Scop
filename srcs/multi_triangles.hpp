@@ -2,8 +2,8 @@
 // Created by Cyril Battistolo on 19/12/2022.
 //
 
-#ifndef TRIANGLES_SHADER_HPP
-#define TRIANGLES_SHADER_HPP
+#ifndef MULTI_TRIANGLES_HPP
+#define MULTI_TRIANGLES_HPP
 
 #include <iostream>
 #include <glm/glm.hpp>
@@ -13,7 +13,7 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
-class triangles_shader
+class multi_triangles
 {
 	int  success{};
 	char infoLog[512]{};

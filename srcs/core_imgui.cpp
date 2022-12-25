@@ -30,7 +30,7 @@ UI::~UI()
 	std::cerr << "UI destroyed" << std::endl;
 }
 
-void UI::setup(int width, int height)
+void UI::setup(int width, int height, float* mixValue, float* xOffset, float* yOffset)
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
@@ -42,6 +42,16 @@ void UI::setup(int width, int height)
 	ImGui::Begin("Hello, world!");
 	if (ImGui::Checkbox("Wireframe", &is_wireframe))
 		update_event();
+	ImGui::SliderFloat("Mix value", mixValue, 0.0f, 1.0f);
+	// two slider on the same line with label on top
+	ImGui::Text("Offset");
+	ImGui::PushItemWidth(100);
+	ImGui::SliderFloat("X", xOffset, -1.0f, 1.0f);
+	ImGui::SameLine();
+	ImGui::PushItemWidth(100);
+	ImGui::SliderFloat("Y", yOffset, -1.0f, 1.0f);
+	// change size slider
+
 	ImGui::End();
 }
 

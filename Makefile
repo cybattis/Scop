@@ -11,7 +11,7 @@ ifeq ($(MAKECMDGOALS), debug)
 endif
 
 INCLUDE 	=	-I/usr/local/include -I/opt/local/include -I/opt/homebrew/include \
-			 	-Ivendor/imgui -Ivendor/glm -Ivendor/glad
+			 	-Ivendor/imgui -Ivendor/glm -Ivendor/glad -Ivendor/stb
 
 LIBS 		=	-framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo \
 			 	-L/usr/local/lib -L/opt/homebrew/lib -lglfw
@@ -26,8 +26,9 @@ IMGUI_DIR	=	vendor/imgui
 GLM_DIR		=	vendor/glm/detail
 GLAD_DIR	=	vendor/glad/glad
 
-SRCS_CORE	=	main.cpp core.cpp core_imgui.cpp core_renderer.cpp shader.cpp\
-				rectangle_shader.cpp triangles_shader.cpp learn_shader.cpp
+SRCS_CORE	=	main.cpp core.cpp core_imgui.cpp core_renderer.cpp shader.cpp \
+				rectangle.cpp multi_triangles.cpp triangle.cpp rectangle_textured.cpp \
+				texture.cpp
 # 				config.cpp
 
 SRCS_IMGUI	=	$(IMGUI_DIR)/imgui.cpp \

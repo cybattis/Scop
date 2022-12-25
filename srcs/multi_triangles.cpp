@@ -2,9 +2,9 @@
 // Created by Cyril Battistolo on 19/12/2022.
 //
 
-#include "triangles_shader.hpp"
+#include "multi_triangles.hpp"
 
-void triangles_shader::setup()
+void multi_triangles::setup()
 {
 	for (int i = 0; i < 2; i++)
 	{
@@ -24,7 +24,7 @@ void triangles_shader::setup()
 	}
 }
 
-void triangles_shader::render() const
+void multi_triangles::render() const
 {
 	for (int i = 0; i < 2; i++)
 	{
@@ -34,7 +34,7 @@ void triangles_shader::render() const
 	}
 }
 
-void triangles_shader::compile_shader()
+void multi_triangles::compile_shader()
 {
 	// Create the vertex shader
 	vertex_shader = glCreateShader(GL_VERTEX_SHADER);

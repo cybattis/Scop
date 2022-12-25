@@ -11,10 +11,11 @@
 int main()
 {
 	Application app(1440, 960, "ft_scop"); // create and init application
+	std::cout << "Compiling shader..." << std::endl;
 	renderer render; // create renderer
 
-	std::cout << "Compiling shader..." << std::endl;
-	render.compile_shader(); // compile shader
+	std::cout << "Commputing objects..." << std::endl;
+	render.compute_objects(); // compile shader
 
 	std::cout << "--- RENDER LOOP ---" << std::endl;
 	// Main loop
@@ -25,7 +26,8 @@ int main()
 
 		render.render();
 
-		app.ui.setup(app.width, app.height);
+		app.ui.setup(app.width, app.height, &render.rectangle_tex.mixValue,
+				&render.rectangle_tex.xOffset, &render.rectangle_tex.yOffset);
 		app.ui.render();
 
 		glfwSwapBuffers(app.window);

@@ -6,20 +6,28 @@
 #define CORE_RENDERER_HPP
 
 #include "core.hpp"
-#include "triangles_shader.hpp"
-#include "rectangle_shader.hpp"
-#include "learn_shader.hpp"
+#include "shader.hpp"
+
+#include "multi_triangles.hpp"
+#include "rectangle.hpp"
+#include "triangle.hpp"
+#include "rectangle_textured.hpp"
 
 class renderer
 {
 public:
-	triangles_shader triangles;
-	learn_shader triangle;
-	rectangle_shader rectangle;
+	rectangle_textured rectangle_tex;
+	multi_triangles multi_triangles;
+	triangle triangle;
+	rectangle rectangle;
+	Shader colored_triangle{};
+	Shader texture_shader{};
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+	renderer();
+
 	void render() const;
-	void compile_shader();
+	void compute_objects();
 };
 
 
