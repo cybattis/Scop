@@ -44,6 +44,7 @@ GLFWwindow* Application::init_glfw(const char *title) const
 	glfwSetMouseButtonCallback(win, mouse_button_callback);
 	glfwSetCursorPosCallback(win, mouse_position_callback);
 	glfwSetFramebufferSizeCallback(win, framebuffer_size_callback);
+	glfwSetWindowRefreshCallback(win, window_refresh_callback);
 
 	// Enable vsync
 	glfwSwapInterval(1);
@@ -57,7 +58,7 @@ GLFWwindow* Application::init_glfw(const char *title) const
 		exit(EXIT_FAILURE);
 	}
 	std::cout << "GLAD initialized" << std::endl;
-
+	glEnable(GL_DEPTH_TEST);
 	return win;
 }
 
@@ -66,7 +67,7 @@ Application::~Application()
 	ui.~UI();
 	glfwDestroyWindow(window);
 	glfwTerminate();
-	std::cerr << "Application terminated" << std::endl;
+	std::cout << "Application terminated" << std::endl;
 	exit(EXIT_SUCCESS);
 }
 
@@ -107,6 +108,12 @@ void Application::mouse_position_callback(GLFWwindow *window, double xpos, doubl
 	(void) xpos;
 	(void) ypos;
 //	std::cout << "Mouse position: " << xpos << ", " << ypos << std::endl;
+}
+
+
+void Application::window_refresh_callback(GLFWwindow *window)
+{
+	(void) window;
 }
 
 void Application::print_info_config(const char *title) const

@@ -6,35 +6,26 @@
 
 renderer::renderer()
 {
-	colored_triangle = Shader("shader/triangle_colors.vert", "shader/triangle_colors.frag");
-	texture_shader = Shader("shader/texture_shader.vert", "shader/texture_shader.frag");
+	std::cout << "Compiling shader..." << std::endl;
+	texture_shader = Shader("shader/default_vertex_shader.vert", "shader/default_fragment_shader.frag");
 
+	std::cout << "Commputing objects..." << std::endl;
 	compute_objects();
+
 	texture_shader.use();
 	texture_shader.setInt("texture1", 0);
 	texture_shader.setInt("texture2", 1);
-	texture_shader.setFloat("xOffSet", rectangle_tex.xOffset);
-	texture_shader.setFloat("yOffSet", rectangle_tex.yOffset);
 }
 
-void renderer::render() const
+void renderer::render()
 {
-	float offset = -0.5f;
 	glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-//	colored_triangle.use();
-//	colored_triangle.setFloat("xOffset", offset);
-
-	rectangle_tex.render(texture_shader.ID);
-
-//	triangle.render(colored_triangle.ID);
-//	rectangle.render();
+	cube.render(texture_shader);
 }
 
 void renderer::compute_objects()
 {
-	rectangle_tex = rectangle_textured();
-//	triangle.generate();
-//	rectangle.generate();
+	cube = cube_textured();
 }

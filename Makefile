@@ -22,27 +22,28 @@ RM			=	rm -rf
 # ==============================================================================
 DIR_SRCS	=	srcs/
 DIR_OBJ		=	objs/
-IMGUI_DIR	=	vendor/imgui
-GLM_DIR		=	vendor/glm/detail
-GLAD_DIR	=	vendor/glad/glad
 
 SRCS_CORE	=	main.cpp core.cpp core_imgui.cpp core_renderer.cpp shader.cpp \
-				rectangle.cpp multi_triangles.cpp triangle.cpp rectangle_textured.cpp \
-				texture.cpp
-# 				config.cpp
+				texture.cpp cube_textured.cpp
 
-SRCS_IMGUI	=	$(IMGUI_DIR)/imgui.cpp \
-				$(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_tables.cpp \
-				$(IMGUI_DIR)/imgui_widgets.cpp $(IMGUI_DIR)/imgui_impl_glfw.cpp \
-				$(IMGUI_DIR)/imgui_impl_opengl3.cpp $(IMGUI_DIR)/imgui_stdlib.cpp
+DIR_COMPONENTS	=	components/
+SRCS_COMPONENTS	=	transform.cpp
 
-SRCS_GLM	=	$(GLM_DIR)/glm.cpp
-SRCS_GLAD	=	$(GLAD_DIR)/glad.cpp
+IMGUI_DIR	=	vendor/imgui/
+SRCS_IMGUI	=	imgui.cpp imgui_draw.cpp imgui_tables.cpp imgui_widgets.cpp \
+				imgui_impl_glfw.cpp imgui_impl_opengl3.cpp imgui_stdlib.cpp
+
+GLM_DIR		=	vendor/glm/detail/
+SRCS_GLM	=	glm.cpp
+
+GLAD_DIR	=	vendor/glad/glad/
+SRCS_GLAD	=	glad.cpp
 
 SRCS		=	$(addprefix $(DIR_SRCS), $(SRCS_CORE)) \
-				$(SRCS_IMGUI) \
-				$(SRCS_GLM) \
-				$(SRCS_GLAD)
+				$(addprefix $(IMGUI_DIR), $(SRCS_IMGUI)) \
+				$(addprefix $(GLM_DIR), $(SRCS_GLM)) \
+				$(addprefix $(GLAD_DIR), $(SRCS_GLAD)) \
+				$(addprefix $(DIR_COMPONENTS)$(DIR_SRCS), $(SRCS_COMPONENTS))
 
 OBJS 		=	$(addprefix $(DIR_OBJ), $(notdir $(SRCS:.cpp=.o)))
 
@@ -51,6 +52,9 @@ DEPS		=	$(OBJS:.o=.d)
 # Rules
 # ==============================================================================
 all: $(NAME)
+
+$(DIR_OBJ)%.o: $(DIR_SRCS)/*/%.cpp | $(DIR_OBJ)
+	$(CC) $(CPPFLAGS) -c $< -o $@
 
 $(DIR_OBJ)%.o: $(DIR_SRCS)%.cpp | $(DIR_OBJ)
 	$(CC) $(CPPFLAGS) -c $< -o $@
