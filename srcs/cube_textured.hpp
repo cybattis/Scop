@@ -18,13 +18,12 @@
 
 class cube_textured
 {
-	char infoLog[512]{};
-	GLuint VAO{}, VBO{};
+	GLuint VAO, VBO;
 	Texture texture1;
 	Texture texture2;
 
 public:
-	float mixValue{};
+	float mixValue;
 	glm::mat4 transform;
 
 private:

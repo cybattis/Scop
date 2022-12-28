@@ -20,30 +20,34 @@ RM			=	rm -rf
 
 # Files
 # ==============================================================================
-DIR_SRCS	=	srcs/
-DIR_OBJ		=	objs/
+DIR_SRCS		=	srcs/
+DIR_OBJ			=	objs/
 
-SRCS_CORE	=	main.cpp core.cpp core_imgui.cpp core_renderer.cpp shader.cpp \
-				texture.cpp cube_textured.cpp
+SRCS_CORE		=	main.cpp core.cpp core_imgui.cpp core_renderer.cpp shader.cpp \
+					texture.cpp cube_textured.cpp
+
+DIR_ASSET		=	asset/
+SRCS_ASSET		=	mesh.cpp parser.cpp model.cpp
 
 DIR_COMPONENTS	=	components/
 SRCS_COMPONENTS	=	transform.cpp
 
-IMGUI_DIR	=	vendor/imgui/
-SRCS_IMGUI	=	imgui.cpp imgui_draw.cpp imgui_tables.cpp imgui_widgets.cpp \
-				imgui_impl_glfw.cpp imgui_impl_opengl3.cpp imgui_stdlib.cpp
+IMGUI_DIR		=	vendor/imgui/
+SRCS_IMGUI		=	imgui.cpp imgui_draw.cpp imgui_tables.cpp imgui_widgets.cpp \
+					imgui_impl_glfw.cpp imgui_impl_opengl3.cpp imgui_stdlib.cpp
 
-GLM_DIR		=	vendor/glm/detail/
-SRCS_GLM	=	glm.cpp
+GLM_DIR			=	vendor/glm/detail/
+SRCS_GLM		=	glm.cpp
 
-GLAD_DIR	=	vendor/glad/glad/
-SRCS_GLAD	=	glad.cpp
+GLAD_DIR		=	vendor/glad/glad/
+SRCS_GLAD		=	glad.cpp
 
 SRCS		=	$(addprefix $(DIR_SRCS), $(SRCS_CORE)) \
 				$(addprefix $(IMGUI_DIR), $(SRCS_IMGUI)) \
 				$(addprefix $(GLM_DIR), $(SRCS_GLM)) \
 				$(addprefix $(GLAD_DIR), $(SRCS_GLAD)) \
-				$(addprefix $(DIR_COMPONENTS)$(DIR_SRCS), $(SRCS_COMPONENTS))
+				$(addprefix $(DIR_COMPONENTS)$(DIR_SRCS), $(SRCS_COMPONENTS)) \
+				$(addprefix $(DIR_ASSET)$(DIR_SRCS), $(SRCS_ASSET))
 
 OBJS 		=	$(addprefix $(DIR_OBJ), $(notdir $(SRCS:.cpp=.o)))
 

@@ -10,17 +10,19 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
-
 class Texture
 {
-	int width{}, height{}, nrChannels{};
-	unsigned char *data{};
-
 public:
-	GLuint ID{};
+	GLuint id{};
+	std::string path;
+	std::string type{};
 
 	Texture() = default;
-	explicit Texture(const std::string& path, int wrapping = GL_REPEAT);
+	explicit Texture(const std::string& path, std::string type, int wrapping = GL_REPEAT);
+
+private:
+	int width{}, height{}, nrChannels{};
+	unsigned char *data{};
 };
 
 

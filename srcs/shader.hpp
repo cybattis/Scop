@@ -7,10 +7,9 @@
 
 #include <glad/glad.h>
 
-#include <string>
+#include <iostream>
 #include <fstream>
 #include <sstream>
-#include <iostream>
 
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
@@ -18,7 +17,7 @@
 class Shader
 {
 public:
-	unsigned int ID; // the program ID
+	unsigned int id; // the program ID
 
 	Shader() = default;
 	Shader(const char* vertexPath, const char* fragmentPath);

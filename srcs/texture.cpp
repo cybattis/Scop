@@ -7,12 +7,14 @@
 
 #include "texture.hpp"
 
-Texture::Texture(const std::string& path, int wrapping)
-{
-	glGenTextures(1, &ID);
-	glBindTexture(GL_TEXTURE_2D, ID);
+#include <utility>
 
-// set the texture wrapping/filtering options (on the currently bound texture object)
+Texture::Texture(const std::string& path, std::string type, int wrapping) : path(path), type(std::move(type))
+{
+	glGenTextures(1, &id);
+	glBindTexture(GL_TEXTURE_2D, id);
+
+	// set the texture wrapping/filtering options (on the currently bound texture object)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapping);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapping);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
@@ -20,10 +22,9 @@ Texture::Texture(const std::string& path, int wrapping)
 
 	// load and generate the texture
 	stbi_set_flip_vertically_on_load(true);
-// load and generate the texture
+	// load and generate the texture
 	data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
 	if (!data) {
-		std::cout << "Failed to load texture" << std::endl;
 		throw std::runtime_error("Failed to load texture");
 	}
 

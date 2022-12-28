@@ -7,13 +7,17 @@
 
 #include "core.hpp"
 #include "shader.hpp"
+#include "asset/model.hpp"
+#include "texture.hpp"
+#include "asset/parser.hpp"
 
 #include "cube_textured.hpp"
 
 class renderer
 {
 public:
-	cube_textured cube;
+	Model cube;
+	cube_textured cube_tex;
 	Shader texture_shader{};
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 

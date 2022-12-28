@@ -21,7 +21,7 @@ int main()
 
 		render.render();
 
-		app.ui.setup(app.width, app.height, &render.cube.mixValue);
+		app.ui.setup(app.width, app.height, render.cube_tex.mixValue); // TODO: replace third parameter by object/asset type
 		app.ui.render();
 
 		glfwSwapBuffers(app.window);

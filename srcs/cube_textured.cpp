@@ -4,10 +4,10 @@
 
 #include "cube_textured.hpp"
 
-cube_textured::cube_textured() : mixValue(0.25f), transform(glm::mat4(1.0f))
+cube_textured::cube_textured() : VAO(0), VBO(0), mixValue(0.25f), transform(glm::mat4(1.0f))
 {
-	texture1 = Texture("assets/textures/container.jpg", GL_CLAMP_TO_EDGE);
-	texture2 = Texture("assets/textures/awesomeface.png");
+	texture1 = Texture("assets/textures/container.jpg", "diffuse", GL_CLAMP_TO_EDGE);
+	texture2 = Texture("assets/textures/awesomeface.png", "diffuse", GL_CLAMP_TO_EDGE);
 
 	glGenBuffers(1, &VBO);
 	glGenVertexArrays(1, &VAO);
@@ -27,23 +27,20 @@ cube_textured::cube_textured() : mixValue(0.25f), transform(glm::mat4(1.0f))
 void cube_textured::render(Shader shader)
 {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture1.ID);
+	glBindTexture(GL_TEXTURE_2D, texture1.id);
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, texture2.ID);
+	glBindTexture(GL_TEXTURE_2D, texture2.id);
 
-	glUniform1f(glGetUniformLocation(shader.ID, "mixValue"), mixValue);
-
-//	glm::mat4 model = glm::mat4(1.0f);
-//	glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+	shader.setFloat("mixValue", mixValue);
 
 	glm::mat4 view = glm::mat4(1.0f);
 	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -10.0f));
 	view = glm::rotate(view, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	glUniformMatrix4fv(glGetUniformLocation(shader.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
+	shader.setMat4("view", view);
 
 	glm::mat4 projection;
-	projection = glm::perspective(glm::radians(45.0f), 1440.0f / 960.0f, 10.0f, 100.0f);
-	glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+	projection = glm::perspective(glm::radians(70.0f), 1440.0f / 960.0f, 10.0f, 100.0f);
+	shader.setMat4("projection", projection);
 
 	glBindVertexArray(VAO);
 	for(unsigned int i = 0; i < 10; i++)
