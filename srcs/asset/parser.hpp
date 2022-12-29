@@ -5,15 +5,15 @@
 #ifndef PARSER_HPP
 #define PARSER_HPP
 
-#include "glad/glad.h"
-
-#include "glm/vec2.hpp"
-#include "glm/vec3.hpp"
-
 #include <iostream>
 #include <vector>
 #include <fstream>
 #include <sstream>
+
+#include "glad/glad.h"
+#include "vertex.hpp"
+
+typedef std::vector<dataMesh> dataMeshes;
 
 class Parser
 {
@@ -21,33 +21,30 @@ class Parser
 	typedef std::vector<glm::vec2> vec2_array;
 	typedef std::vector<GLuint>    index_array;
 
-	struct Index
+	struct vertIndex
 	{
-		GLuint vertex_index;
-		GLuint uv_index;
-		GLuint normal_index;
+		GLuint position_index[3];
+		GLuint uv_index[3];
+		GLuint normal_index[3];
 	};
-	typedef std::vector<Index>     raw_index_array;
+	typedef std::vector<vertIndex> raw_index_array;
 
 public:
-	struct dataMesh {
-		std::string  name;
-		std::string  path;
-
+	struct raw_data {
 		vec3_array   v_Position;
 		vec3_array   v_Color;
 		vec3_array   v_Normal;
 		vec2_array   v_TexCoord;
-
 		index_array  indices;
 	};
 
-	static dataMesh* parse_file(const std::string& path);
+	static dataMeshes parse_file(const std::string& path);
 
 private:
 	Parser() = default;
 	static std::stringstream read_file(const std::string& path);
-	static index_array find_indices(raw_index_array raw_index);
+	static void process_raw_data(dataMesh& data_mesh, const raw_index_array& raw_index, raw_data raw_data);
+	static vertIndex parse_face(std::istringstream& f);
 };
 
 

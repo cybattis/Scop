@@ -17,14 +17,14 @@
 
 class Model
 {
-	typedef std::vector<Vertex>  VertexArray;
-	typedef std::vector<GLuint>  IndexArray;
-	typedef std::vector<Texture> TextureArray;
-
 public:
 	Model() = default;
 	Model(const std::string& path);
 	void Draw(Shader &shader);
+
+	glm::vec3 position;
+	glm::vec3 rotation;
+	glm::vec3 scale;
 
 private:
 	std::vector<Mesh> meshes;

@@ -12,33 +12,24 @@
 
 #include "../shader.hpp"
 #include "../texture.hpp"
+#include "vertex.hpp"
 
-struct Vertex {
-	glm::vec3 position;
-	glm::vec3 color;
-	glm::vec3 normal;
-	glm::vec2 texCoords;
-};
+typedef std::vector<Texture> textureArray;
 
 class Mesh
 {
-	typedef std::vector<Vertex>  VertexArray;
-	typedef std::vector<GLuint>  IndexArray;
-	typedef std::vector<Texture> TextureArray;
-
 public:
 	// mesh data
-	VertexArray  vertices;
-	IndexArray   indices;
-	TextureArray textures;
-	GLuint       VAO, SSBO;
+	dataMesh     data;
+	textureArray textures;
+	GLuint       VAO;
 
 	Mesh() = default;
-	Mesh(VertexArray& vertices, IndexArray& indices, TextureArray& textures);
+	Mesh(dataMesh data, textureArray& textures);
 	void draw(Shader &shader);
 
 private:
-	GLuint VBO{}, EBO{};
+	GLuint VBO, EBO;
 	void setupMesh();
 };
 

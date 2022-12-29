@@ -30,19 +30,64 @@ UI::~UI()
 	std::cerr << "UI destroyed" << std::endl;
 }
 
-void UI::setup(int width, int height, float mixValue)
+void UI::setup(int width, int height, Model& obj)
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 
-	// Imgui config
-	ImGui::SetNextWindowSize(ImVec2(static_cast<float>(width) / 5, static_cast<float>(height)));
-	ImGui::SetNextWindowPos(ImVec2(static_cast<float>(width) - static_cast<float>(width) / 5, 0));
-	ImGui::Begin("Hello, world!");
+	float side_panel_width = 350;
+	ImGui::SetNextWindowSize(ImVec2(side_panel_width, static_cast<float>(height)));
+	ImGui::SetNextWindowPos(ImVec2(static_cast<float>(width) - side_panel_width, 0));
+	ImGui::Begin("Object settings", nullptr,
+			ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
+
+	ImGui::PushItemWidth(300);
+	ImGui::SliderFloat3("Pos", &obj.position[0], -100.0f, 100.0f, "%.1f");
+	ImGui::SliderFloat3("Rot", &obj.rotation[0], -180.0f, 180.0f, "%.1f");
+	ImGui::SliderFloat("Scale", &obj.scale[0], 0.0f, 30.0f, "%.2f", ImGuiSliderFlags_Logarithmic);
+
 	if (ImGui::Checkbox("Wireframe", &is_wireframe))
 		update_event();
-	ImGui::SliderFloat("Mix value", &mixValue, 0.0f, 1.0f);
+	ImGui::End();
+
+	ImGui::Begin("Loader", nullptr,
+			ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
+
+	// Parse files in directory
+	const std::filesystem::path dir{"assets"};
+	std::vector<std::string> items;
+	for (auto const& dir_entry : std::filesystem::directory_iterator{dir})
+	{
+		if (dir_entry.path().extension() == ".obj")
+			items.push_back(dir_entry.path().filename().string());
+	}
+
+	// Combo
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Load model");
+
+	static unsigned int item_current_idx = 0; // Here we store our selection data as an index.
+	std::string combo_preview_value = items[item_current_idx];
+	ImGui::PushItemWidth(250);
+	if (ImGui::BeginCombo(" ", combo_preview_value.c_str(), 0))
+	{
+		for (unsigned int n = 0; n < items.size(); n++)
+		{
+			const bool is_selected = (item_current_idx == n);
+			if (ImGui::Selectable(items[n].c_str(), is_selected))
+			{
+				item_current_idx = n;
+				obj = Model("assets/" + items[n]);
+			}
+
+			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+
 	ImGui::End();
 }
 

@@ -16,8 +16,7 @@
 class renderer
 {
 public:
-	Model cube;
-	cube_textured cube_tex;
+	Model obj;
 	Shader texture_shader{};
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 

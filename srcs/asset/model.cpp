@@ -4,50 +4,36 @@
 
 #include "model.hpp"
 
-Model::Model(const std::string &path)
+Model::Model(const std::string &path) :
+	position{0.0f, 0.0f, 0.0f},
+	rotation{0.0f, 0.0f, 0.0f},
+	scale{1.0f, 1.0f, 1.0f}
 {
 	load_model(path);
 }
 
 void Model::load_model(const std::string &path)
 {
-	Parser::dataMesh* data = Parser::parse_file(path);
-	VertexArray vertices;
-	IndexArray indices;
-	TextureArray textures;
-
+	dataMeshes mesh = Parser::parse_file(path);
+	// TODO put texture array in dataMesh
+	textureArray textures;
 	textures.emplace_back("assets/textures/container.jpg", "diffuse");
 	textures.emplace_back("assets/textures/awesomeface.png", "diffuse");
 
-	for (int i = 0; i < data->v_Position.size(); i++)
-	{
-		Vertex vertex{};
-		vertex.position = data->v_Position[i];
-
-		if (!data->v_Color.empty())
-			vertex.color = data->v_Color[i];
-		else
-			vertex.color = glm::vec3(0.0f, 0.0f, 0.0f);
-
-		if (!data->v_Normal.empty())
-			vertex.normal = data->v_Normal[i];
-		else
-			vertex.normal = glm::vec3(0.0f, 0.0f, 0.0f);
-
-		if (!data->v_TexCoord.empty())
-			vertex.texCoords = data->v_TexCoord[i];
-		else
-			vertex.texCoords = glm::vec2(0.0f, 0.0f);
-
-		vertices.push_back(vertex);
-	}
-	for (int i = 0; i < data->indices.size(); i++)
-		indices.push_back(data->indices[i]);
-	meshes.emplace_back(vertices, indices, textures);
+	for (auto &m : mesh)
+		meshes.emplace_back(m, textures);
 }
 
 void Model::Draw(Shader &shader)
 {
-	for (unsigned int i = 0; i < meshes.size(); i++)
-		meshes[i].draw(shader);
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(position[0], position[1], position[2]));
+	model = glm::rotate(model, glm::radians(rotation[0]), glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(rotation[1]), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(rotation[2]), glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::scale(model, glm::vec3(scale[0], scale[0], scale[0]));
+	shader.setMat4("model", model);
+
+	for (auto & meshe : meshes)
+		meshe.draw(shader);
 }

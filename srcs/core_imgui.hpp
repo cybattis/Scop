@@ -13,8 +13,9 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-
 #include "glm/glm.hpp"
+
+#include "asset/model.hpp"
 
 class UI
 {
@@ -24,7 +25,7 @@ public:
 	explicit UI(GLFWwindow *window);
 	~UI();
 
-	void setup(int width, int height, float mixValue); // TODO: replace third parameter by object/asset type
+	void setup(int width, int height, Model& obj); // TODO: replace third parameter by object/asset type
 	void render();
 
 private:

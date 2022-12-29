@@ -6,10 +6,8 @@
 
 #include <utility>
 
-Mesh::Mesh(VertexArray& vertices, IndexArray& indices, TextureArray& textures) :
-	vertices(std::move(vertices)),
-	indices(std::move(indices)),
-	textures(std::move(textures)), VAO(0)
+Mesh::Mesh(dataMesh data, textureArray& textures) :
+	data(std::move(data)), textures(std::move(textures)), VAO(0), VBO(0), EBO(0)
 {
 	setupMesh();
 }
@@ -24,24 +22,24 @@ void Mesh::setupMesh()
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
 	glBufferData(GL_ARRAY_BUFFER,
-				vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+				data.vertices.size() * sizeof(vertex), &data.vertices[0], GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-			static_cast<GLsizei>(indices.size() * sizeof(GLuint)), &indices[0], GL_STATIC_DRAW);
+			static_cast<GLsizei>(data.indices.size() * sizeof(GLuint)), &data.indices[0], GL_STATIC_DRAW);
 
 	// vertex positions
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), nullptr);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), nullptr);
 	// vertex colors
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, color));
 	// vertex normals
 	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, normal));
 	// vertex texture coords
 	glEnableVertexAttribArray(3);
-	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, texCoords));
 
 	glBindVertexArray(0);
 	std::cout << "Mesh setup" << std::endl;
@@ -79,7 +77,7 @@ void Mesh::draw(Shader &shader)
 	}
 
 	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(data.indices.size()), GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 	// always good practice to set everything back to defaults once configured.
 	glActiveTexture(GL_TEXTURE0);
