@@ -30,7 +30,7 @@ DIR_ASSET		=	asset/
 SRCS_ASSET		=	mesh.cpp parser.cpp model.cpp
 
 DIR_COMPONENTS	=	components/
-SRCS_COMPONENTS	=	transform.cpp
+SRCS_COMPONENTS	=	camera.cpp
 
 IMGUI_DIR		=	vendor/imgui/
 SRCS_IMGUI		=	imgui.cpp imgui_draw.cpp imgui_tables.cpp imgui_widgets.cpp \

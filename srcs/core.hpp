@@ -10,6 +10,8 @@
 #include <GLFW/glfw3.h>
 
 #include "core_imgui.hpp"
+#include "core_renderer.hpp"
+#include "Global.hpp"
 
 class Application
 {
@@ -17,10 +19,13 @@ public:
 	int width, height;
 	float ratio;
 	GLFWwindow *window{};
+	renderer render;
 	UI ui;
 
 	explicit Application(int width = 960, int height = 540, const char *title = "My window");
 	~Application();
+
+	void main_loop();
 
 private:
 	GLFWwindow* init_glfw(const char *title) const;
@@ -32,7 +37,12 @@ private:
 	static void mouse_position_callback(GLFWwindow* window, double xpos, double ypos);
 	static void window_refresh_callback(GLFWwindow* window);
 
+	static void process_input(GLFWwindow *window);
+
 	void print_info_config(const char *title) const;
+
+	float lastFrame = 0.0f;
+	void updateDeltaTime();
 };
 
 

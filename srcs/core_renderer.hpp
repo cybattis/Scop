@@ -5,25 +5,26 @@
 #ifndef CORE_RENDERER_HPP
 #define CORE_RENDERER_HPP
 
-#include "core.hpp"
+#include "glm/vec4.hpp"
+
 #include "shader.hpp"
 #include "asset/model.hpp"
 #include "texture.hpp"
 #include "asset/parser.hpp"
-
-#include "cube_textured.hpp"
+#include "components/camera.hpp"
 
 class renderer
 {
 public:
 	Model obj;
-	Shader texture_shader{};
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	Shader activeShader{};
+	glm::vec4 clear_color;
+	Camera cam;
 
 	renderer();
 
 	void render();
-	void compute_objects();
+	void computeObjects();
 };
 
 

@@ -4,23 +4,19 @@
 
 #include "core_renderer.hpp"
 
-renderer::renderer()
+renderer::renderer() : clear_color(glm::vec4(0.45f, 0.55f, 0.60f, 1.00f))
 {
-	std::cout << "Compiling shader..." << std::endl;
-	texture_shader = Shader("shader/default_vertex_shader.vert", "shader/default_fragment_shader.frag");
+	activeShader = Shader("shader/default_vertex_shader.vert", "shader/default_fragment_shader.frag");
+	activeShader.use();
 
-	compute_objects();
+	computeObjects();
 
-	texture_shader.use();
-
-	glm::mat4 view = glm::mat4(1.0f);
-	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -50.0f));
-	view = glm::rotate(view, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	texture_shader.setMat4("view", view);
+	cam = Camera();
+	activeShader.setMat4("view", cam.getView());
 
 	glm::mat4 projection;
 	projection = glm::perspective(glm::radians(45.0f), 1440.0f / 960.0f, 1.0f, 200.0f);
-	texture_shader.setMat4("projection", projection);
+	activeShader.setMat4("projection", projection);
 }
 
 void renderer::render()
@@ -28,12 +24,12 @@ void renderer::render()
 	glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	obj.Draw(texture_shader);
+	activeShader.setMat4("view", cam.getView());
+	obj.Draw(activeShader);
 }
 
-void renderer::compute_objects()
+void renderer::computeObjects()
 {
-	std::cout << "Commputing objects..." << std::endl;
-
+	std::cout << "Commputing object..." << std::endl;
 	obj = Model("assets/box_textured.obj");
 }

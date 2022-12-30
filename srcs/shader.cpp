@@ -6,6 +6,7 @@
 
 Shader::Shader(const char *vertexPath, const char *fragmentPath)
 {
+	std::cout << "Compiling shader..." << std::endl;
 	// Open file and compile shader
 	std::string vertexCode;
 	std::string fragmentCode;

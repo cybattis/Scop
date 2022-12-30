@@ -7,25 +7,22 @@
 
 #include <iostream>
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-#include "glm/glm.hpp"
 
 #include "asset/model.hpp"
 
 class UI
 {
 	bool is_wireframe = false;
+	GLFWwindow *window;
 
 public:
 	explicit UI(GLFWwindow *window);
 	~UI();
 
-	void setup(int width, int height, Model& obj); // TODO: replace third parameter by object/asset type
+	void setup(Model& obj, int width, int height); // TODO: replace third parameter by object/asset type
 	void render();
 
 private:

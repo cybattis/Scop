@@ -4,6 +4,25 @@
 
 #include "core.hpp"
 
+float deltaTime;
+
+void Application::main_loop()
+{
+	while (!glfwWindowShouldClose(window))
+	{
+		updateDeltaTime();
+		process_input(window);
+
+		render.render();
+
+		ui.setup(render.obj, width, height);
+		ui.render();
+
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+	}
+}
+
 Application::Application(const int width, const int height, const char *title) :
 	width(width), height(height),
 	window(init_glfw(title)),
@@ -24,8 +43,8 @@ GLFWwindow* Application::init_glfw(const char *title) const
 		exit(EXIT_FAILURE);
 
 	// GL 3.3 + GLSL 330
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
 
@@ -69,6 +88,27 @@ Application::~Application()
 	glfwTerminate();
 	std::cout << "Application terminated" << std::endl;
 	exit(EXIT_SUCCESS);
+}
+
+void Application::updateDeltaTime()
+{
+	auto currentFrame = static_cast<float>(glfwGetTime());
+	deltaTime = currentFrame - lastFrame;
+	lastFrame = currentFrame;
+}
+
+void Application::process_input(GLFWwindow *window)
+{
+	Camera *cam = &static_cast<Application *>(glfwGetWindowUserPointer(window))->render.cam;
+	float speed = cam->getSpeed();
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		cam->position += speed * cam->front;
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		cam->position -= speed * cam->front;
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		cam->position -= glm::normalize(glm::cross(cam->front, cam->up)) * speed;
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		cam->position += glm::normalize(glm::cross(cam->front, cam->up)) * speed;
 }
 
 void Application::error_callback(int error, const char *description)

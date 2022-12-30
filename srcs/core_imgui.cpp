@@ -4,7 +4,7 @@
 
 #include "core_imgui.hpp"
 
-UI::UI(GLFWwindow* window)
+UI::UI(GLFWwindow* window) : window(window)
 {
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
@@ -30,15 +30,16 @@ UI::~UI()
 	std::cerr << "UI destroyed" << std::endl;
 }
 
-void UI::setup(int width, int height, Model& obj)
+void UI::setup(Model& obj, int width, int height)
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 
 	float side_panel_width = 350;
-	ImGui::SetNextWindowSize(ImVec2(side_panel_width, static_cast<float>(height)));
-	ImGui::SetNextWindowPos(ImVec2(static_cast<float>(width) - side_panel_width, 0));
+
+	ImGui::SetNextWindowSize(ImVec2(side_panel_width, height));
+	ImGui::SetNextWindowPos(ImVec2(width - side_panel_width, 0));
 	ImGui::Begin("Object settings", nullptr,
 			ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
 
@@ -51,6 +52,7 @@ void UI::setup(int width, int height, Model& obj)
 		update_event();
 	ImGui::End();
 
+	// Second window
 	ImGui::Begin("Loader", nullptr,
 			ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
 
