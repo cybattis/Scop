@@ -90,7 +90,7 @@ void Parser::process_raw_data(dataMesh& data_mesh, const raw_index_array& raw_in
 	{
 		for (int j = 0; j < 3; ++j, ++index)
 		{
-			vertex v;
+			Vertex v;
 
 			data_mesh.indices.push_back(index);
 

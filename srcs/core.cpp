@@ -15,8 +15,10 @@ void Application::main_loop()
 
 		render.render();
 
-		ui.setup(render.obj, width, height);
-		ui.render();
+		if (show_ui) {
+			ui.setup(render.obj, width, height);
+			ui.render();
+		}
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -121,6 +123,10 @@ void Application::key_callback(GLFWwindow *window, int key, int scancode, int ac
 {
 	(void) scancode;
 	(void) mods;
+	auto *app = static_cast<Application *>(glfwGetWindowUserPointer(window));
+
+	if (key == GLFW_KEY_F1 && action == GLFW_PRESS)
+		app->show_ui = !app->show_ui;
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 	if (key == GLFW_KEY_F12 && action == GLFW_PRESS)

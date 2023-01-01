@@ -20,7 +20,7 @@ class Model
 public:
 	Model() = default;
 	Model(const std::string& path);
-	void Draw(Shader &shader);
+	void draw(Shader &shader);
 
 	glm::vec3 position;
 	glm::vec3 rotation;

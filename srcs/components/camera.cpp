@@ -7,9 +7,9 @@
 Camera::Camera() :
 	position(glm::vec3(0.0f, 3.0f, 20.0f)),
 	front(glm::vec3(0.0f, 0.0f, -1.0f)),
-	up(glm::vec3(0.0f, 1.0f, 0.0f))
+	up(glm::vec3(0.0f, 1.0f, 0.0f)),
+	projection(glm::perspective(glm::radians(70.0f), 1440.0f / 960.0f, 1.0f, 50.0f))
 {
-
 }
 
 
@@ -18,12 +18,12 @@ Camera::Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up) :
 {
 }
 
-glm::mat4 Camera::getView()
+glm::mat4 Camera::getView() const
 {
 	return glm::lookAt(position, position + front, up);
 }
 
-float Camera::getSpeed()
+float Camera::getSpeed() const
 {
 	return baseSpeed * deltaTime;
 }

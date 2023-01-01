@@ -16,15 +16,22 @@
 class renderer
 {
 public:
-	Model obj;
-	Shader activeShader{};
-	glm::vec4 clear_color;
+	glm::vec4 clearColor;
 	Camera cam;
+	Shader gridShader{};
+	Shader activeShader{};
+	Model obj;
+	GLuint grid_VAO;
+	indexArray grid_indices;
 
 	renderer();
 
 	void render();
 	void computeObjects();
+
+private:
+	void drawGrid() const;
+	void generateGrid(int size);
 };
 
 

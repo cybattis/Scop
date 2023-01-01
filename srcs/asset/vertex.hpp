@@ -8,14 +8,14 @@
 #include "glm/vec2.hpp"
 #include "glm/vec3.hpp"
 
-struct vertex {
+struct Vertex {
 	glm::vec3 position;
 	glm::vec3 color;
 	glm::vec3 normal;
 	glm::vec2 texCoords;
 };
 
-typedef std::vector<vertex> vertexArray;
+typedef std::vector<Vertex> vertexArray;
 typedef std::vector<GLuint> indexArray;
 
 struct dataMesh {

@@ -43,6 +43,8 @@ private:
 
 	float lastFrame = 0.0f;
 	void updateDeltaTime();
+
+	bool show_ui = false;
 };
 
 

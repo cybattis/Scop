@@ -24,8 +24,10 @@ void Model::load_model(const std::string &path)
 		meshes.emplace_back(m, textures);
 }
 
-void Model::Draw(Shader &shader)
+void Model::draw(Shader &shader)
 {
+	shader.use();
+
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(position[0], position[1], position[2]));
 	model = glm::rotate(model, glm::radians(rotation[0]), glm::vec3(1.0f, 0.0f, 0.0f));
