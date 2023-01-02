@@ -30,6 +30,7 @@ Application::Application(const int width, const int height, const char *title) :
 	window(init_glfw(title)),
 	ui(UI(window))
 {
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	// TODO: init config
 	ratio = static_cast<float>(width) / static_cast<float>(height);
 	print_info_config(title);
@@ -66,6 +67,7 @@ GLFWwindow* Application::init_glfw(const char *title) const
 	glfwSetCursorPosCallback(win, mouse_position_callback);
 	glfwSetFramebufferSizeCallback(win, framebuffer_size_callback);
 	glfwSetWindowRefreshCallback(win, window_refresh_callback);
+	glfwSetScrollCallback(win, mouse_scroll_callback);
 
 	// Enable vsync
 	glfwSwapInterval(1);
@@ -101,7 +103,7 @@ void Application::updateDeltaTime()
 
 void Application::process_input(GLFWwindow *window)
 {
-	Camera *cam = &static_cast<Application *>(glfwGetWindowUserPointer(window))->render.cam;
+	Camera *cam = &static_cast<Application *>(glfwGetWindowUserPointer(window))->render.camera;
 	float speed = cam->getSpeed();
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		cam->position += speed * cam->front;
@@ -126,7 +128,13 @@ void Application::key_callback(GLFWwindow *window, int key, int scancode, int ac
 	auto *app = static_cast<Application *>(glfwGetWindowUserPointer(window));
 
 	if (key == GLFW_KEY_F1 && action == GLFW_PRESS)
+	{
 		app->show_ui = !app->show_ui;
+		if (app->show_ui)
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		else
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	}
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 	if (key == GLFW_KEY_F12 && action == GLFW_PRESS)
@@ -148,12 +156,52 @@ void Application::mouse_button_callback(GLFWwindow *window, int button, int acti
 	(void) window;
 }
 
+void Application::mouse_scroll_callback(GLFWwindow *window, double xoffset, double yoffset)
+{
+	(void) xoffset;
+	auto *app = static_cast<Application *>(glfwGetWindowUserPointer(window));
+	app->render.camera.FOV -= static_cast<float>(yoffset);
+	if (app->render.camera.FOV < 1.0f)
+		app->render.camera.FOV = 1.0f;
+	if (app->render.camera.FOV > 45.0f)
+		app->render.camera.FOV = 45.0f;
+}
+
 void Application::mouse_position_callback(GLFWwindow *window, double xpos, double ypos)
 {
-	(void) window;
-	(void) xpos;
-	(void) ypos;
-//	std::cout << "Mouse position: " << xpos << ", " << ypos << std::endl;
+	auto *app = static_cast<Application *>(glfwGetWindowUserPointer(window));
+	if (app->firstMouse)
+	{
+		app->lastX = xpos;
+		app->lastY = ypos;
+		app->firstMouse = false;
+	}
+
+	auto xOffset = static_cast<float>(xpos - app->lastX);
+	auto yOffset = static_cast<float>(app->lastY - ypos);
+	app->lastX = xpos;
+	app->lastY = ypos;
+
+	if (app->show_ui)
+		return;
+
+	float sensitivity = 0.1f;
+	xOffset *= sensitivity;
+	yOffset *= sensitivity;
+
+	app->yaw   += xOffset;
+	app->pitch += yOffset;
+
+	if(app->pitch > 89.0f)
+		app->pitch = 89.0f;
+	if(app->pitch < -89.0f)
+		app->pitch = -89.0f;
+
+	glm::vec3 direction;
+	direction.x = cos(glm::radians(app->yaw)) * cos(glm::radians(app->pitch));
+	direction.y = sin(glm::radians(app->pitch));
+	direction.z = sin(glm::radians(app->yaw)) * cos(glm::radians(app->pitch));
+	app->render.camera.front = glm::normalize(direction);
 }
 
 

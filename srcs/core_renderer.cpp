@@ -4,20 +4,15 @@
 
 #include "core_renderer.hpp"
 
-renderer::renderer() : clearColor(glm::vec4(0.45f, 0.55f, 0.60f, 1.00f)), cam(Camera())
+renderer::renderer() :
+	clearColor(glm::vec4(0.25f, 0.25f, 0.26f, 1.00f)),
+	camera(Camera())
 {
 	gridShader = Shader("shader/default_vertex_shader.vert", "shader/grid_fragment_shader.frag");
 	activeShader = Shader("shader/default_vertex_shader.vert", "shader/default_fragment_shader.frag");
 
 	computeObjects();
-	generateGrid(100);
-
-	activeShader.use();
-	activeShader.setMat4("view", cam.getView());
-	activeShader.setMat4("projection", cam.projection);
-
-	gridShader.use();
-	gridShader.setMat4("projection", cam.projection);
+	generateGrid(150);
 }
 
 void renderer::render()
@@ -25,12 +20,11 @@ void renderer::render()
 	glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	camera.updateZoom();
+
 	drawGrid();
 
-	activeShader.use();
-	activeShader.setMat4("view", cam.getView());
-
-	obj.draw(activeShader);
+	obj.draw(activeShader, camera);
 }
 
 void renderer::computeObjects()
@@ -41,16 +35,15 @@ void renderer::computeObjects()
 
 void renderer::drawGrid() const
 {
-	gridShader.use();
-	gridShader.setMat4("view", cam.getView());
+	gridShader.use(camera);
+	gridShader.setMat4("view", camera.getView());
 
 	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(50.0f, 0.0f, 50.0f));
+	model = glm::translate(model, glm::vec3(50.0f, 0.0f, 75.5f));
 	gridShader.setMat4("model", model);
 
-	glLineWidth(10.0f);
 	glBindVertexArray(grid_VAO);
-	glDrawElements(GL_LINES, grid_indices.size(), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_LINES, static_cast<GLsizei>(grid_indices.size()), GL_UNSIGNED_INT, 0);
 }
 
 void renderer::generateGrid(int size)

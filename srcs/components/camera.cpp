@@ -8,7 +8,8 @@ Camera::Camera() :
 	position(glm::vec3(0.0f, 3.0f, 20.0f)),
 	front(glm::vec3(0.0f, 0.0f, -1.0f)),
 	up(glm::vec3(0.0f, 1.0f, 0.0f)),
-	projection(glm::perspective(glm::radians(70.0f), 1440.0f / 960.0f, 1.0f, 50.0f))
+	FOV(45.0f),
+	projection(glm::perspective(glm::radians(FOV), 1440.0f / 960.0f, 1.0f, 100.0f))
 {
 }
 
@@ -26,4 +27,9 @@ glm::mat4 Camera::getView() const
 float Camera::getSpeed() const
 {
 	return baseSpeed * deltaTime;
+}
+
+void Camera::updateZoom()
+{
+	projection = glm::perspective(glm::radians(FOV), 1440.0f / 960.0f, 1.0f, 100.0f);
 }

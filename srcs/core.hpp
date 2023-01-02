@@ -31,11 +31,12 @@ private:
 	GLFWwindow* init_glfw(const char *title) const;
 
 	static void error_callback(int error, const char *description);
+	static void window_refresh_callback(GLFWwindow* window);
+	static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 	static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
 	static void mouse_button_callback(GLFWwindow *window, int button, int action, int mods);
-	static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 	static void mouse_position_callback(GLFWwindow* window, double xpos, double ypos);
-	static void window_refresh_callback(GLFWwindow* window);
+	static void mouse_scroll_callback(GLFWwindow *window, double xoffset, double yoffset);
 
 	static void process_input(GLFWwindow *window);
 
@@ -45,6 +46,11 @@ private:
 	void updateDeltaTime();
 
 	bool show_ui = false;
+
+	bool firstMouse = true;
+	float yaw = -90.0f;
+	float pitch = 0.0f;
+	double lastX = static_cast<double>(width) / 2, lastY = static_cast<double>(height) / 2;
 };
 
 

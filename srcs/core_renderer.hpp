@@ -17,11 +17,12 @@ class renderer
 {
 public:
 	glm::vec4 clearColor;
-	Camera cam;
-	Shader gridShader{};
+	Camera camera;
 	Shader activeShader{};
 	Model obj;
-	GLuint grid_VAO;
+
+	Shader gridShader{}; // TODO: make grid in shader
+	GLuint grid_VAO{};
 	indexArray grid_indices;
 
 	renderer();
@@ -35,4 +36,4 @@ private:
 };
 
 
-#endif //CORE_RENDERER_HPP
+#endif //CORE_RENDERER_HPPP

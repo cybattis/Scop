@@ -24,9 +24,9 @@ void Model::load_model(const std::string &path)
 		meshes.emplace_back(m, textures);
 }
 
-void Model::draw(Shader &shader)
+void Model::draw(Shader &shader, Camera camera)
 {
-	shader.use();
+	shader.use(camera);
 
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(position[0], position[1], position[2]));

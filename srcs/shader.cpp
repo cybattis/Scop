@@ -71,9 +71,11 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath)
 	glDeleteShader(fragment);
 }
 
-void Shader::use() const
+void Shader::use(Camera camera) const
 {
 	glUseProgram(id);
+	setMat4("view", camera.getView());
+	setMat4("projection", camera.projection);
 }
 
 void Shader::setBool(const std::string &name, const bool& value) const

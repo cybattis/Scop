@@ -14,6 +14,8 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
+#include "components/camera.hpp"
+
 class Shader
 {
 public:
@@ -22,7 +24,7 @@ public:
 	Shader() = default;
 	Shader(const char* vertexPath, const char* fragmentPath);
 
-	void use() const;
+	void use(Camera camera) const;
 
 	void setBool(const std::string &name, const bool& value) const;
 	void setInt(const std::string &name, const int& value) const;
