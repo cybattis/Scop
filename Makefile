@@ -23,8 +23,8 @@ RM			=	rm -rf
 DIR_SRCS		=	srcs/
 DIR_OBJ			=	objs/
 
-SRCS_CORE		=	main.cpp core.cpp core_imgui.cpp core_renderer.cpp shader.cpp \
-					texture.cpp cube_textured.cpp
+SRCS_CORE		=	main.cpp core.cpp core_imgui.cpp renderer.cpp shader.cpp \
+					texture.cpp
 
 DIR_ASSET		=	asset/
 SRCS_ASSET		=	mesh.cpp parser.cpp model.cpp
