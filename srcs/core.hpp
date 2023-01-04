@@ -10,7 +10,7 @@
 #include <GLFW/glfw3.h>
 
 #include "core_imgui.hpp"
-#include "core_renderer.hpp"
+#include "renderer.hpp"
 #include "Global.hpp"
 
 class Application

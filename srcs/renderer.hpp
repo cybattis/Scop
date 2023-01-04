@@ -2,8 +2,8 @@
 // Created by Cyril Battistolo on 21/12/2022.
 //
 
-#ifndef CORE_RENDERER_HPP
-#define CORE_RENDERER_HPP
+#ifndef RENDERER_HPP
+#define RENDERER_HPP
 
 #include "glm/vec4.hpp"
 

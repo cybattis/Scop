@@ -2,7 +2,7 @@
 // Created by Cyril Battistolo on 21/12/2022.
 //
 
-#include "core_renderer.hpp"
+#include "renderer.hpp"
 
 renderer::renderer() :
 	clearColor(glm::vec4(0.25f, 0.25f, 0.26f, 1.00f)),
