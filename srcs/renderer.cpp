@@ -8,8 +8,11 @@ renderer::renderer() :
 	clearColor(glm::vec4(0.25f, 0.25f, 0.26f, 1.00f)),
 	camera(Camera())
 {
-	gridShader = Shader("shader/default_vertex_shader.vert", "shader/grid_fragment_shader.frag");
-	activeShader = Shader("shader/default_vertex_shader.vert", "shader/default_fragment_shader.frag");
+	gridShader = Shader("shader/default_shader.vert", "shader/grid_shader.frag", "grid_shader");
+	defaultShader = Shader("shader/default_shader.vert", "shader/default_shader.frag", "default_shader");
+	lightingShader = Shader("shader/light_shader.vert", "shader/light_shader.frag", "light_shader");
+
+	light = Light(glm::vec3(0.0f, 5.0f, 10.0f), glm::vec3(1.0f), 0.25f);
 
 	computeObjects();
 	generateGrid(150);
@@ -20,11 +23,19 @@ void renderer::render()
 	glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	camera.updateZoom();
+	camera.update();
 
 	drawGrid();
 
-	obj.draw(activeShader, camera);
+	light.draw(defaultShader, camera);
+
+	lightingShader.use(camera);
+	lightingShader.setVec3("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
+	lightingShader.setVec3("lightColor",  light.color);
+	lightingShader.setVec3("lightPos", light.model.position);
+	lightingShader.setFloat("ambientStrength", light.intensity);
+
+	obj.draw(lightingShader, camera);
 }
 
 void renderer::computeObjects()
@@ -33,6 +44,9 @@ void renderer::computeObjects()
 	obj = Model("assets/box_textured.obj");
 }
 
+
+// Grid
+// =============================================================================
 void renderer::drawGrid() const
 {
 	gridShader.use(camera);

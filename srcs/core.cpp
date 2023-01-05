@@ -16,8 +16,8 @@ void Application::main_loop()
 		render.render();
 
 		if (show_ui) {
-			ui.setup(render.obj, width, height);
-			ui.render();
+			ui->setup(render.obj, width, height);
+			ui->render();
 		}
 
 		glfwSwapBuffers(window);
@@ -27,9 +27,9 @@ void Application::main_loop()
 
 Application::Application(const int width, const int height, const char *title) :
 	width(width), height(height),
-	window(init_glfw(title)),
-	ui(UI(window))
+	window(init_glfw(title))
 {
+	ui = std::make_unique<UI>(window);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	// TODO: init config
 	ratio = static_cast<float>(width) / static_cast<float>(height);
@@ -87,7 +87,7 @@ GLFWwindow* Application::init_glfw(const char *title) const
 
 Application::~Application()
 {
-	ui.~UI();
+//	ui.~UI();
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	std::cout << "Application terminated" << std::endl;

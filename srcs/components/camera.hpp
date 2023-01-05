@@ -24,10 +24,10 @@ public:
 	Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up);
 	glm::mat4 getView() const;
 	float getSpeed() const;
-	void updateZoom();
+	void update();
 
 private:
-	float baseSpeed = 2.5f;
+	float baseSpeed = 5.0f;
 };
 
 

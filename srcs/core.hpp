@@ -13,14 +13,17 @@
 #include "renderer.hpp"
 #include "Global.hpp"
 
+class UI;
+
 class Application
 {
+
 public:
 	int width, height;
 	float ratio;
 	GLFWwindow *window{};
 	renderer render;
-	UI ui;
+	std::unique_ptr<UI> ui;
 
 	explicit Application(int width = 960, int height = 540, const char *title = "My window");
 	~Application();

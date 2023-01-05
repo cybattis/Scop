@@ -32,6 +32,8 @@ UI::~UI()
 
 void UI::setup(Model& obj, int width, int height)
 {
+	auto *app = static_cast<Application *>(glfwGetWindowUserPointer(window));
+
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
@@ -50,11 +52,6 @@ void UI::setup(Model& obj, int width, int height)
 
 	if (ImGui::Checkbox("Wireframe", &is_wireframe))
 		update_event();
-	ImGui::End();
-
-	// Second window
-	ImGui::Begin("Loader", nullptr,
-			ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
 
 	// Parse files in directory
 	const std::filesystem::path dir{"assets"};
@@ -64,6 +61,16 @@ void UI::setup(Model& obj, int width, int height)
 		if (dir_entry.path().extension() == ".obj")
 			items.push_back(dir_entry.path().filename().string());
 	}
+
+	ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing();
+
+	ImGui::SliderFloat("Ambient", &app->render.light.intensity, 0.0f, 100.0f, "%.2f", ImGuiSliderFlags_Logarithmic);
+	ImGui::ColorEdit3("Light color", &app->render.light.color[0]);
+	ImGui::SliderFloat("x", &app->render.light.model.position[0], -200.0f, 200.0f, "%.1f");
+	ImGui::SliderFloat("y", &app->render.light.model.position[1], -200.0f, 200.0f, "%.1f");
+	ImGui::SliderFloat("z", &app->render.light.model.position[2], -200.0f, 200.0f, "%.1f");
+
+	ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing();
 
 	// Combo
 	ImGui::AlignTextToFramePadding();

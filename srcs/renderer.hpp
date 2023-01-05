@@ -12,18 +12,16 @@
 #include "texture.hpp"
 #include "asset/parser.hpp"
 #include "components/camera.hpp"
+#include "components/light.hpp"
 
 class renderer
 {
 public:
 	glm::vec4 clearColor;
 	Camera camera;
-	Shader activeShader{};
-	Model obj;
 
-	Shader gridShader{}; // TODO: make grid in shader
-	GLuint grid_VAO{};
-	indexArray grid_indices;
+	Model obj;
+	Light light;
 
 	renderer();
 
@@ -31,6 +29,14 @@ public:
 	void computeObjects();
 
 private:
+	Shader defaultShader{};
+	Shader lightingShader{};
+
+	// TODO: make grid in shader
+	Shader gridShader{};
+	GLuint grid_VAO{};
+	indexArray grid_indices;
+
 	void drawGrid() const;
 	void generateGrid(int size);
 };

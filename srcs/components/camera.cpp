@@ -29,7 +29,7 @@ float Camera::getSpeed() const
 	return baseSpeed * deltaTime;
 }
 
-void Camera::updateZoom()
+void Camera::update()
 {
 	projection = glm::perspective(glm::radians(FOV), 1440.0f / 960.0f, 1.0f, 100.0f);
 }

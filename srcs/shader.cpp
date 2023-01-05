@@ -4,7 +4,8 @@
 
 #include "shader.hpp"
 
-Shader::Shader(const char *vertexPath, const char *fragmentPath)
+Shader::Shader(const char *vertexPath, const char *fragmentPath, const char* name)
+	: id(0), name(name)
 {
 	std::cout << "Compiling shader..." << std::endl;
 	// Open file and compile shader
