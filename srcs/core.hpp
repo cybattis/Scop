@@ -48,7 +48,7 @@ private:
 	float lastFrame = 0.0f;
 	void updateDeltaTime();
 
-	bool show_ui = false;
+	bool lock_mouse = false;
 
 	bool firstMouse = true;
 	float yaw = -90.0f;

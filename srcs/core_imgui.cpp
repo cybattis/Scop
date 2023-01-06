@@ -49,7 +49,7 @@ void UI::setup(Model& obj, int width, int height)
 	ImGui::SliderFloat3("Pos", &obj.position[0], -100.0f, 100.0f, "%.1f");
 	ImGui::SliderFloat3("Rot", &obj.rotation[0], -180.0f, 180.0f, "%.1f");
 	ImGui::SliderFloat("Scale", &obj.scale[0], 0.0f, 30.0f, "%.2f", ImGuiSliderFlags_Logarithmic);
-
+	ImGui::ColorEdit3("Color", &obj.baseColor[0]);
 	if (ImGui::Checkbox("Wireframe", &is_wireframe))
 		update_event();
 
@@ -64,11 +64,15 @@ void UI::setup(Model& obj, int width, int height)
 
 	ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing();
 
-	ImGui::SliderFloat("Ambient", &app->render.light.intensity, 0.0f, 100.0f, "%.2f", ImGuiSliderFlags_Logarithmic);
+	ImGui::SliderFloat("Ambient", &app->render.light.intensity, 0.0f, 1.0f, "%.2f");
 	ImGui::ColorEdit3("Light color", &app->render.light.color[0]);
+	ImGui::Spacing();
 	ImGui::SliderFloat("x", &app->render.light.model.position[0], -200.0f, 200.0f, "%.1f");
 	ImGui::SliderFloat("y", &app->render.light.model.position[1], -200.0f, 200.0f, "%.1f");
 	ImGui::SliderFloat("z", &app->render.light.model.position[2], -200.0f, 200.0f, "%.1f");
+	ImGui::Spacing();
+	ImGui::SliderFloat("Specular", &app->render.light.specularStrength, 0.01f, 1.0f, "%.2f");
+	ImGui::SliderInt("Shininess", &app->render.light.shininess, 1, 512, "%d");
 
 	ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing();
 

@@ -26,6 +26,8 @@ public:
 	glm::vec3 rotation;
 	glm::vec3 scale;
 
+	glm::vec3 baseColor;
+
 private:
 	std::vector<Mesh> meshes;
 	std::string directory;

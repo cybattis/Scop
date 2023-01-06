@@ -7,7 +7,8 @@
 Model::Model(const std::string &path) :
 	position{0.0f, 0.0f, 0.0f},
 	rotation{0.0f, 0.0f, 0.0f},
-	scale{1.0f, 1.0f, 1.0f}
+	scale{1.0f, 1.0f, 1.0f},
+	baseColor{1.0f, 1.0f, 1.0f}
 {
 	load_model(path);
 }

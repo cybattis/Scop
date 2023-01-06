@@ -16,6 +16,8 @@ public:
 	Model model;
 	glm::vec3 color;
 	float intensity;
+	float specularStrength;
+	int shininess;
 
 	Light();
 	Light(glm::vec3 position, glm::vec3 color, float intensity);

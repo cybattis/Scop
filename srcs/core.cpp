@@ -15,10 +15,8 @@ void Application::main_loop()
 
 		render.render();
 
-		if (show_ui) {
-			ui->setup(render.obj, width, height);
-			ui->render();
-		}
+		ui->setup(render.obj, width, height);
+		ui->render();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -127,10 +125,10 @@ void Application::key_callback(GLFWwindow *window, int key, int scancode, int ac
 	(void) mods;
 	auto *app = static_cast<Application *>(glfwGetWindowUserPointer(window));
 
-	if (key == GLFW_KEY_F1 && action == GLFW_PRESS)
+	if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
 	{
-		app->show_ui = !app->show_ui;
-		if (app->show_ui)
+		app->lock_mouse = !app->lock_mouse;
+		if (app->lock_mouse)
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		else
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -182,7 +180,7 @@ void Application::mouse_position_callback(GLFWwindow *window, double xpos, doubl
 	app->lastX = xpos;
 	app->lastY = ypos;
 
-	if (app->show_ui)
+	if (app->lock_mouse)
 		return;
 
 	float sensitivity = 0.1f;
