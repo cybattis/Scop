@@ -5,6 +5,9 @@
 #include "core.hpp"
 
 float deltaTime;
+int windowWidth;
+int windowHeight;
+float aspectRatio;
 
 void Application::main_loop()
 {
@@ -15,7 +18,7 @@ void Application::main_loop()
 
 		render.render();
 
-		ui->setup(render.obj, width, height);
+		ui->setup(render.obj);
 		ui->render();
 
 		glfwSwapBuffers(window);
@@ -24,20 +27,22 @@ void Application::main_loop()
 }
 
 Application::Application(const int width, const int height, const char *title) :
-	width(width), height(height),
-	window(init_glfw(title))
+	window(init_glfw(title, width, height))
 {
 	ui = std::make_unique<UI>(window);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	// TODO: init config
-	ratio = static_cast<float>(width) / static_cast<float>(height);
+	aspectRatio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
 	print_info_config(title);
 	glfwSetWindowUserPointer(window, (void *)this);
 }
 
-GLFWwindow* Application::init_glfw(const char *title) const
+GLFWwindow* Application::init_glfw(const char *title, const int width, const int height) const
 {
 	GLFWwindow *win;
+
+	windowWidth = width;
+	windowHeight = height;
 
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
@@ -49,7 +54,7 @@ GLFWwindow* Application::init_glfw(const char *title) const
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
 
-	win = glfwCreateWindow(width, height, title, nullptr, nullptr);
+	win = glfwCreateWindow(windowWidth, windowHeight, title, nullptr, nullptr);
 	if (!win) {
 		glfwTerminate();
 		exit(EXIT_FAILURE);
@@ -85,7 +90,6 @@ GLFWwindow* Application::init_glfw(const char *title) const
 
 Application::~Application()
 {
-//	ui.~UI();
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	std::cout << "Application terminated" << std::endl;
@@ -142,6 +146,9 @@ void Application::key_callback(GLFWwindow *window, int key, int scancode, int ac
 void Application::framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
 	(void) window;
+	aspectRatio = static_cast<float>(width) / static_cast<float>(height);
+	windowWidth = width;
+	windowHeight = height;
 	glViewport(0, 0, width, height);
 	std::cout << "Window resized to " << width << "x" << height << std::endl;
 }
@@ -222,7 +229,7 @@ void Application::print_info_config(const char *title) const
 	std::cout << "GLFW version: " << glfwGetVersionString() << std::endl;
 	std::cout << "" << std::endl;
 	std::cout << title << std::endl;
-	std::cout << "Window size: " << width << "x" << height << std::endl;
-	std::cout << "Window ratio: " << ratio << std::endl;
+	std::cout << "Window size: " << windowWidth << "x" << windowHeight << std::endl;
+	std::cout << "Window ratio: " << windowHeight << std::endl;
 	std::cout << "Application created" << std::endl;
 }

@@ -7,4 +7,8 @@
 
 extern float deltaTime;
 
+extern int windowWidth;
+extern int windowHeight;
+extern float aspectRatio;
+
 #endif //GLOBAL_HPP

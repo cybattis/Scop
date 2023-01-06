@@ -12,7 +12,7 @@ renderer::renderer() :
 	defaultShader = Shader("shader/default_shader.vert", "shader/default_shader.frag", "default_shader");
 	lightingShader = Shader("shader/light_shader.vert", "shader/light_shader.frag", "light_shader");
 
-	light = Light(glm::vec3(0.0f, 2.0f, 10.0f), glm::vec3(1.0f), 0.25f);
+	light = Light(glm::vec3(3.0f, 3.0f, 5.0f), glm::vec3(1.0f), 0.25f);
 
 	computeObjects();
 	generateGrid(150);
@@ -25,13 +25,18 @@ void renderer::render()
 
 	camera.update();
 
-	drawGrid();
 
-	light.model.position.x = cos(glfwGetTime()) * 5.0f;
-	light.model.position.z = cos(glfwGetTime() / 2.0f) * 5.0f;
-
+//	light.model.position.x = cos(glfwGetTime()) * 5.0f;
+//	light.model.position.z = cos(glfwGetTime() / 2.0f) * 5.0f;
 	light.draw(defaultShader, camera);
+	setupLightingShader();
 
+	drawGrid();
+	obj.draw(lightingShader, camera);
+}
+
+void renderer::setupLightingShader() const
+{
 	lightingShader.use(camera);
 	lightingShader.setVec3("objectColor", obj.baseColor);
 	lightingShader.setVec3("lightColor",  light.color);
@@ -40,8 +45,6 @@ void renderer::render()
 	lightingShader.setFloat("specularStrength", light.specularStrength);
 	lightingShader.setInt("shininess", light.shininess);
 	lightingShader.setVec3("viewPos", camera.position);
-
-	obj.draw(lightingShader, camera);
 }
 
 void renderer::computeObjects()

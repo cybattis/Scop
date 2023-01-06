@@ -30,7 +30,7 @@ UI::~UI()
 	std::cerr << "UI destroyed" << std::endl;
 }
 
-void UI::setup(Model& obj, int width, int height)
+void UI::setup(Model& obj)
 {
 	auto *app = static_cast<Application *>(glfwGetWindowUserPointer(window));
 
@@ -40,8 +40,8 @@ void UI::setup(Model& obj, int width, int height)
 
 	float side_panel_width = 350;
 
-	ImGui::SetNextWindowSize(ImVec2(side_panel_width, height));
-	ImGui::SetNextWindowPos(ImVec2(width - side_panel_width, 0));
+	ImGui::SetNextWindowSize(ImVec2(side_panel_width, windowHeight));
+	ImGui::SetNextWindowPos(ImVec2(windowWidth - side_panel_width, 0));
 	ImGui::Begin("Object settings", nullptr,
 			ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
 

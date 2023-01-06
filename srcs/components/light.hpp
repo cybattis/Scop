@@ -10,14 +10,23 @@
 
 #include "../asset/model.hpp"
 
+enum LightType
+{
+	DIRECTIONAL,
+	POINT,
+	SPOT,
+	AREA
+};
+
 class Light
 {
 public:
-	Model model;
+//	LightType type;   // 0: point, 1: directional, 2: spot, 3: area
+	Model     model;  // TODO: hardcode light model
 	glm::vec3 color;
-	float intensity;
-	float specularStrength;
-	int shininess;
+	float     intensity;
+	float     specularStrength;
+	int       shininess;
 
 	Light();
 	Light(glm::vec3 position, glm::vec3 color, float intensity);

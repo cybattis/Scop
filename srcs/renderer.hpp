@@ -9,8 +9,6 @@
 
 #include "shader.hpp"
 #include "asset/model.hpp"
-#include "texture.hpp"
-#include "asset/parser.hpp"
 #include "components/camera.hpp"
 #include "components/light.hpp"
 
@@ -20,7 +18,7 @@ public:
 	glm::vec4 clearColor;
 	Camera camera;
 
-	Model obj;
+	Model obj; // TODO: make this a vector of models
 	Light light;
 
 	renderer();
@@ -39,6 +37,8 @@ private:
 
 	void drawGrid() const;
 	void generateGrid(int size);
+
+	void setupLightingShader() const;
 };
 
 

@@ -19,8 +19,6 @@ class Application
 {
 
 public:
-	int width, height;
-	float ratio;
 	GLFWwindow *window{};
 	renderer render;
 	std::unique_ptr<UI> ui;
@@ -31,7 +29,7 @@ public:
 	void main_loop();
 
 private:
-	GLFWwindow* init_glfw(const char *title) const;
+	GLFWwindow* init_glfw(const char *title, int width, int height) const;
 
 	static void error_callback(int error, const char *description);
 	static void window_refresh_callback(GLFWwindow* window);
@@ -53,7 +51,7 @@ private:
 	bool firstMouse = true;
 	float yaw = -90.0f;
 	float pitch = 0.0f;
-	double lastX = static_cast<double>(width) / 2, lastY = static_cast<double>(height) / 2;
+	double lastX = static_cast<double>(windowWidth) / 2, lastY = static_cast<double>(windowHeight) / 2;
 };
 
 

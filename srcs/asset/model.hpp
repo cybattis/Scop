@@ -7,13 +7,10 @@
 
 #include <iostream>
 #include <vector>
-
 #include "glad/glad.h"
 
-#include "../texture.hpp"
 #include "parser.hpp"
 #include "mesh.hpp"
-
 
 class Model
 {
@@ -25,7 +22,6 @@ public:
 	glm::vec3 position;
 	glm::vec3 rotation;
 	glm::vec3 scale;
-
 	glm::vec3 baseColor;
 
 private:

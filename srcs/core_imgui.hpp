@@ -24,7 +24,7 @@ public:
 	explicit UI(GLFWwindow *window);
 	~UI();
 
-	void setup(Model& obj, int width, int height); // TODO: replace third parameter by object/asset type
+	void setup(Model& obj); // TODO: replace third parameter by object/asset type
 	void render();
 
 private:

@@ -4,18 +4,16 @@
 
 #include "camera.hpp"
 
-Camera::Camera() :
-	position(glm::vec3(0.0f, 3.0f, 20.0f)),
-	front(glm::vec3(0.0f, 0.0f, -1.0f)),
-	up(glm::vec3(0.0f, 1.0f, 0.0f)),
-	FOV(45.0f),
-	projection(glm::perspective(glm::radians(FOV), 1440.0f / 960.0f, 1.0f, 100.0f))
+Camera::Camera() : Camera(glm::vec3(0.0f, 3.0f, 20.0f),
+		                  glm::vec3(0.0f, 0.0f, -1.0f),
+		                  glm::vec3(0.0f, 1.0f, 0.0f))
 {
+	projection = glm::perspective(glm::radians(FOV), 1440.0f / 960.0f, nearPlane, farPlane);
 }
 
 
-Camera::Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up) :
-	position(position), front(front), up(up)
+Camera::Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up, float FOV) :
+	position(position), front(front), up(up), FOV(FOV)
 {
 }
 
@@ -31,5 +29,5 @@ float Camera::getSpeed() const
 
 void Camera::update()
 {
-	projection = glm::perspective(glm::radians(FOV), 1440.0f / 960.0f, 1.0f, 100.0f);
+	projection = glm::perspective(glm::radians(FOV), aspectRatio, 1.0f, 100.0f);
 }
