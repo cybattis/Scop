@@ -9,7 +9,7 @@ int windowWidth;
 int windowHeight;
 float aspectRatio;
 
-void Application::main_loop()
+void Application::update()
 {
 	while (!glfwWindowShouldClose(window))
 	{

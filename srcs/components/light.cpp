@@ -5,7 +5,7 @@
 #include "light.hpp"
 
 Light::Light(glm::vec3 position, glm::vec3 color, float intensity) :
-	model("assets/light.obj"),
+	model("assets/components/light.obj"),
 	color(color),
 	intensity(intensity),
 	specularStrength(0.5f),
@@ -23,5 +23,7 @@ Light::Light() : Light(glm::vec3(0.0f, 2.0f, 10.0f), glm::vec3(1.0f), 1.0f)
 
 void Light::draw(Shader &shader, Camera camera)
 {
+	shader.use(camera);
+	shader.setVec3("color", color);
 	model.draw(shader, camera);
 }

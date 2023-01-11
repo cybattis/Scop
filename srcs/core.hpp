@@ -26,7 +26,7 @@ public:
 	explicit Application(int width = 960, int height = 540, const char *title = "My window");
 	~Application();
 
-	void main_loop();
+	void update();
 
 private:
 	GLFWwindow* init_glfw(const char *title, int width, int height) const;

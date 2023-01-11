@@ -26,6 +26,9 @@ public:
 
 	Mesh() = default;
 	Mesh(dataMesh data, textureArray& textures);
+//	Mesh(const Mesh &mesh) = default;
+//	Mesh &operator=(const Mesh &mesh) = default;
+
 	void draw(Shader &shader);
 
 private:

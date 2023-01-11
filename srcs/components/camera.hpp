@@ -24,6 +24,9 @@ public:
 
 	Camera();
 	Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up, float FOV = 45.0f);
+	Camera(const Camera &camera) = default;
+	Camera &operator=(const Camera &camera) = default;
+
 	glm::mat4 getView() const;
 	float getSpeed() const;
 	void update();

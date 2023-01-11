@@ -17,6 +17,9 @@ class Model
 public:
 	Model() = default;
 	explicit Model(const std::string& path);
+	Model(const Model &model) = default;
+	Model &operator=(const Model &model) = default;
+
 	void draw(Shader &shader, Camera camera);
 
 	glm::vec3 position;

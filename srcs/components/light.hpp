@@ -30,6 +30,8 @@ public:
 
 	Light();
 	Light(glm::vec3 position, glm::vec3 color, float intensity);
+	Light(const Light& other) = default;
+	Light& operator=(const Light& other) = default;
 
 	void draw(Shader &shader, Camera camera);
 };

@@ -24,6 +24,8 @@ public:
 
 	Shader() = default;
 	Shader(const char* vertexPath, const char* fragmentPath, const char* shaderName);
+	Shader(const Shader& shader) = default;
+	~Shader() = default;
 
 	void use(Camera camera) const;
 
